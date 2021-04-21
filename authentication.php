@@ -2,18 +2,11 @@
 
 const USER_FILE = "./data/users.json";
 
-//fetch data from json file
-function read_users() {
-    if(!file_exists(USER_FILE)) {
-        print "Users database not found.";
-        die(1);
-    }
-    $fetch_users = file_get_contents(USER_FILE);
-    return json_decode($fetch_users, true);
-}
+include_once "./common/readusers.php";
+include_once "./common/redirect.php";
 
 function login(string $username, string $password) {
-    $users = read_users();
+    $users = read_users(USER_FILE);
     foreach($users as &$list) {
         if($list['username'] === $username) {
             $password_check = password_verify($password, $list['password']);
@@ -40,7 +33,7 @@ function login(string $username, string $password) {
 }
 
 function register($firstname, $lastname, $username, $password) {
-    $users_array = read_users();
+    $users_array = read_users(USER_FILE);
 
     $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
@@ -83,13 +76,4 @@ function logout() {
     $cookie_params = session_get_cookie_params();
     setcookie(session_name(), '', time() - 2000, $cookie_params['path'], $cookie_params['$domain'], $cookie_params['secure'], $cookie_params['httonly']);
 
-}
-
-function redirect(string $url, int $statuscode) {
-    $path = $_SERVER["REQUEST_URI"];
-    $str_arr = explode ("/", $path);
-    $redirection_path = 'http://' . $_SERVER["HTTP_HOST"] . '/' . $str_arr[1] . '/' . $url;
-
-    header("Location: $redirection_path");
-    http_response_code($statuscode);
 }
