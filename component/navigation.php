@@ -22,7 +22,6 @@
                 </a> 
             </li>
             <?php 
-                session_start();
                 if(!isset($_SESSION['username'])):
             ?>
                 <li class="drop-down">
@@ -41,7 +40,7 @@
             ?>
                 <li>
                     <a href="userPage.php" >
-                        <?php echo $user ?>
+                        <?php echo $username ?>
                     </a>
                 </li>
             <?php endif ?>

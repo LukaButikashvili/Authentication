@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php 
-    include "./component/head.php";
+    session_start();
+    include "./common/include.php";
+    include_template('head.php', ['name' => 'UserPage'], true);
 ?>
 <body>
     <?php 
-        include_once "./component/navigation.php"
+        if(isset($_SESSION['username'])) {
+            $session_array = ['username' => $_SESSION['username']];
+            include_template('navigation.php', $session_array, true);
+        } else {
+            include_template('navigation.php');
+        }
     ?>
     <?php 
         if(!isset($_SESSION['username'])): 
@@ -27,6 +34,9 @@
             </form>
         </main>
     <?php endif ?>
+    <?php
+        include_template('footer.php');
+    ?>
 </body>
 </html>
 

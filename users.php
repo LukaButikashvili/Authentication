@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php 
-    include_once "./component/head.php";
+    include "./common/include.php";
+    include_template('head.php', ['name' => 'Users'], true);
 ?>
 <body>
     <?php 
-        include_once "./component/navigation.php"
+        session_start();
+        if(isset($_SESSION['username'])) {
+            $session_array = ['username' => $_SESSION['username']];
+            include_template('navigation.php', $session_array, true);
+        } else {
+            include_template('navigation.php');
+        }
     ?>
     <div>
         <table style="width: 50%;">
@@ -51,6 +58,8 @@
             ?>
         </table>
     </div>
-    <?php include_once "./component/footer.php" ?>
+    <?php
+        include_template('footer.php');
+    ?>
 </body>
 </html>
